@@ -538,14 +538,21 @@ _rust_library_attrs = {
     "crate_type": attr.string(),
 }
 
+def _rust_library_output(crate_type):
+    extension = "rlib"
+    if crate_type == "dylib":
+        extension = "so"
+    
+    return {
+        "rust_lib": "lib%{name}.{}".format(extension)
+    }
+
 rust_library = rule(
     _rust_library_impl,
     attrs = dict(_rust_common_attrs.items() +
                  _rust_library_attrs.items()),
     host_fragments = ["cpp"],
-    outputs = {
-        "rust_lib": "lib%{name}.rlib",
-    },
+    outputs = _rust_library_output,
     toolchains = ["@io_bazel_rules_rust//rust:toolchain"],
 )
 
