@@ -538,13 +538,13 @@ _rust_library_attrs = {
     "crate_type": attr.string(),
 }
 
-def _rust_library_output(crate_type):
+def _rust_library_output(name, crate_type):
     extension = "rlib"
     if crate_type == "dylib":
         extension = "so"
     
     return {
-        "rust_lib": "lib%{name}.{}".format(extension)
+        "rust_lib": "lib{}.{}".format(name, extension)
     }
 
 rust_library = rule(
